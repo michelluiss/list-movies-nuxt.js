@@ -2,7 +2,7 @@
   <v-container>
     <span class="text-center" v-if="loading">Loading...</span>
     <div class="movie-details-page" v-else>
-      <h1>Movie: {{ movie.original_title }}</h1>
+      <h1>Movie: {{ movie.title }}</h1>
       <v-row>
         <v-col cols="3">
           <img :src="`https://image.tmdb.org/t/p/w220_and_h330_face/${movie.poster_path}`" alt="" width="100%">

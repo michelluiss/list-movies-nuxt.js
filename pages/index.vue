@@ -5,13 +5,15 @@
       <v-row>
         <v-col cols="3" v-for="(movie) in movies" :key="movie.id">
           <v-card height="100%">
-            <v-img
-              class="white--text align-end"
-              height="350px"
-              :src="`https://image.tmdb.org/t/p/w220_and_h330_face/${movie.poster_path}`"
-            >
-              <v-card-title>{{movie.original_title}}</v-card-title>
-            </v-img>
+            <NuxtLink :to="`/movie/${movie.id}`" class="link">
+              <v-img
+                class="white--text align-end"
+                height="350px"
+                :src="`https://image.tmdb.org/t/p/w220_and_h330_face/${movie.poster_path}`"
+              >
+                <v-card-title>{{movie.title}}</v-card-title>
+              </v-img>
+            </NuxtLink>
 
             <v-card-subtitle class="pb-0">Rating {{movie.vote_average}}</v-card-subtitle>
 
@@ -20,8 +22,14 @@
             </v-card-text>
 
             <v-card-actions>
-              <NuxtLink to="/movie/10">
-                <v-btn color="orange" text>Explore</v-btn>
+              <NuxtLink :to="`/movie/${movie.id}`" class="link">
+                <v-btn
+                  color="red"
+                  class="ma-2 white--text"
+                >
+                  Read more
+                  <v-icon right dark>mdi-chevron-right</v-icon>
+                </v-btn>
               </NuxtLink>
             </v-card-actions>
           </v-card>
@@ -32,13 +40,11 @@
 </template>
 
 <script>
-import Logo from '~/components/Logo.vue'
 import VuetifyLogo from '~/components/VuetifyLogo.vue'
 import { mapState } from 'vuex'
 
 export default {
   components: {
-    Logo,
     VuetifyLogo
   },
   computed: {
@@ -53,3 +59,9 @@ export default {
   }
 }
 </script>
+
+<style lang="scss">
+.link {
+  text-decoration: none;
+}
+</style>
