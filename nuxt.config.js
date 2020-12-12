@@ -1,5 +1,7 @@
 import colors from 'vuetify/es5/util/colors'
 
+const env = require('dotenv').config()
+
 export default {
   // Disable server-side rendering (https://go.nuxtjs.dev/ssr-mode)
   ssr: false,
@@ -17,6 +19,8 @@ export default {
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
     ]
   },
+
+  env: env.parsed,
 
   // Global CSS (https://go.nuxtjs.dev/config-css)
   css: [
@@ -37,7 +41,13 @@ export default {
 
   // Modules (https://go.nuxtjs.dev/config-modules)
   modules: [
+    '@nuxtjs/axios'
   ],
+
+  // Used as fallback if no runtime config is provided
+  axios: {
+    baseURL: 'https://api.themoviedb.org/3',
+  },
 
   // Vuetify module configuration (https://go.nuxtjs.dev/config-vuetify)
   vuetify: {
