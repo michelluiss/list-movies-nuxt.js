@@ -22,6 +22,23 @@ export default {
 
   env: env.parsed,
 
+  router: {
+    extendRoutes(routes, resolve) {
+      routes.push(
+        {
+          path: '/',
+          component: 'pages/index.vue',
+          name: 'index'
+        },
+        {
+          path: '/movie/:id',
+          component: 'pages/movies/Movie.vue',
+          name: 'movie'
+        }
+      )
+    }
+  },
+
   // Global CSS (https://go.nuxtjs.dev/config-css)
   css: [
   ],

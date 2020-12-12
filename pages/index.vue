@@ -20,7 +20,9 @@
             </v-card-text>
 
             <v-card-actions>
-              <v-btn color="orange" text>Explore</v-btn>
+              <NuxtLink to="/movie/10">
+                <v-btn color="orange" text>Explore</v-btn>
+              </NuxtLink>
             </v-card-actions>
           </v-card>
         </v-col>
@@ -45,7 +47,7 @@ export default {
     })
   },
   async fetch({store}) {
-    await store.dispatch('movie')
+    await store.dispatch('movies')
   },
   created() {
   }
