@@ -19,7 +19,10 @@ const state = {
 
 const mutations = {
   setMovies(state, moviesList) {
-    state.movies = moviesList.results
+    state.movies = moviesList
+  },
+  resetMovies(state) {
+    state.movies = []
   },
   setMovie(state, movie) {
     state.movie = movie
@@ -35,7 +38,7 @@ const actions = {
     params.page = 1
     await this.$axios.$get('/movie/popular', { params })
       .then(response => {
-        commit('setMovies', response)
+        commit('setMovies', response.results)
       })
       .catch(error => {
         console.log(error)
@@ -46,6 +49,19 @@ const actions = {
     return await this.$axios.$get(`/movie/${movieId}`, { params })
       .then(response => {
         commit('setMovie', response)
+        return true
+      })
+      .catch(error => {
+        return error
+      })
+  },
+  async searchMovie({ commit }, searchValue) {
+    commit('resetMovies')
+    const params = getDefaultParams()
+    params.query = searchValue
+    return await this.$axios.$get('/search/movie', { params })
+      .then(response => {
+        commit('setMovies', response.results)
         return true
       })
       .catch(error => {
