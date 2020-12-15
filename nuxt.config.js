@@ -56,6 +56,14 @@ export default {
           meta: {
             required_auth: true
           }
+        },
+        {
+          path: '/list/:id',
+          component: 'pages/movies/List.vue',
+          name: 'list',
+          meta: {
+            required_auth: true
+          }
         }
       )
     }

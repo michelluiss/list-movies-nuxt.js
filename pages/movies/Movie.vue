@@ -59,6 +59,7 @@ import videos from '~/components/videos'
 import { mapState } from 'vuex'
 
 export default {
+  name: 'Movie',
   components: {
     videos
   },

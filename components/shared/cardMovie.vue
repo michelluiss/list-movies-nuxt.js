@@ -46,3 +46,9 @@ export default {
   },
 }
 </script>
+
+<style lang="scss">
+.link {
+  text-decoration: none;
+}
+</style>
