@@ -48,15 +48,25 @@ export default {
   computed: {
   },
   created() {
+    const request_token = JSON.parse(localStorage.getItem('request_token'))
+    if (request_token.expity > new Date()) {
+      this.createToken()
+    } else this.listMovies()
   },
   methods: {
+    listMovies() {
+      const session_id = JSON.parse(localStorage.getItem('session_id'))
+      this.$store.dispatch('listMovies')
+        .then(response => {
+          this.$router.push({ path: '/popular-movies' })
+        })
+    },
     createToken() {
       const params = {
         api_key: this.apiKey
       }
       this.$store.dispatch('createToken', params)
         .then(response => {
-          // console.log(response)
           this.login(response.request_token)
         })
     },

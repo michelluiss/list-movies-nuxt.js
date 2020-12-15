@@ -15,6 +15,7 @@ const state = {
   movies: [],
   movie: {},
   videos: [],
+  list: [],
   authentication: {
     api_key: null,
     session_id: null,
@@ -46,6 +47,9 @@ const mutations = {
   },
   setVideos(state, videos) {
     state.videos = videos
+  },
+  setListMovies(state, listMovies) {
+    state.list = listMovies
   }
 }
 
@@ -151,6 +155,27 @@ const actions = {
       .catch(error => {
         return error
       })
+  },
+  async listMovies({ commit, state }) {
+    const params = {
+      api_key: state.authentication.api_key,
+      session_id: state.authentication.session_id
+    }
+    return await this.$axios.$get('/account/account_id/lists', { params })
+      .then(response => {
+        commit('setListMovies', response.results)
+        return true
+      })
+      .catch(error => {
+        return error
+      })
+  },
+  setAuthorization({ commit }) {
+    const request_token = JSON.parse(localStorage.getItem('request_token'))
+    const session_id = JSON.parse(localStorage.getItem('session_id'))
+    commit('saveToken', { request_token })
+    commit('saveApiKey', request_token.api_key)
+    commit('saveSession', session_id.session_id)
   }
 }
 

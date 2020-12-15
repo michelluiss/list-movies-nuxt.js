@@ -79,6 +79,9 @@ export default {
       return this.$route.path !== '/'
     }
   },
+  created() {
+    this.$store.dispatch('setAuthorization')
+  },
   methods: {
     backPage() {
       window.history.back()
