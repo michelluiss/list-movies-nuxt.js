@@ -65,7 +65,7 @@ export default {
           to: '/popular-movies'
         },
         {
-          icon: 'mdi-chart-bubble',
+          icon: 'mdi-format-list-bulleted',
           title: 'List Movies',
           to: '/list-movies'
         }

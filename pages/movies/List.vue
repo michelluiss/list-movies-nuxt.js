@@ -1,6 +1,7 @@
 <template>
   <v-container>
-    <div class="movie-details-page">
+    <div class="list-page">
+      <NuxtLink :to="'/list-movies'" class="link"><v-icon color="#FFAB00" size="13" class="mr-1">mdi-arrow-left</v-icon>List Movies</NuxtLink>
       <h1>List: {{ listMovies.name }}</h1>
       <div v-if="listMovies && !listMovies.id" class="d-flex">
         <v-skeleton-loader width="250" type="card" class="mr-3"></v-skeleton-loader>
@@ -51,3 +52,12 @@ export default {
   }
 }
 </script>
+
+<style lang="scss">
+.list-page {
+  .link {
+    color: #FFAB00;
+    font-size: 13px;
+  }
+}
+</style>

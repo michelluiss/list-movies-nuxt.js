@@ -2,6 +2,7 @@
   <v-container>
     <span class="text-center" v-if="loading">Loading...</span>
     <div class="movie-details-page" v-else>
+      <NuxtLink :to="'/popular-movies'" class="back-link"><v-icon color="#FFAB00" size="13" class="mr-1">mdi-arrow-left</v-icon>List Movies</NuxtLink>
       <h1>Movie: {{ movie.title }}</h1>
       <v-row>
         <v-col cols="3">
@@ -108,3 +109,13 @@ export default {
   }
 }
 </script>
+
+<style lang="scss">
+.movie-details-page {
+  .back-link {
+    text-decoration: none;
+    color: #FFAB00;
+    font-size: 13px;
+  }
+}
+</style>
