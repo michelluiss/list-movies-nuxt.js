@@ -183,7 +183,6 @@ const actions = {
     }
     return await this.$axios.$get(`/list/${listId}`, { params })
       .then(response => {
-        console.log(response)
         commit('setListMovies', response)
         return true
       })
