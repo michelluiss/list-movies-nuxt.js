@@ -54,6 +54,9 @@ const mutations = {
   },
   setListMovies(state, movies) {
     state.listMovies = movies
+  },
+  resetListMovies(state) {
+    state.listMovies = []
   }
 }
 

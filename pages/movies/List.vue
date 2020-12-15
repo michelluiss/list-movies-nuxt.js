@@ -38,6 +38,9 @@ export default {
   created() {
     this.fetchList()
   },
+  beforeDestroy() {
+    this.$store.commit('resetListMovies')
+  },
   methods: {
     fetchList() {
       this.$store.dispatch('list', this.$route.params.id)
