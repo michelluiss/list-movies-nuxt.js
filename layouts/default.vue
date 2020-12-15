@@ -28,11 +28,12 @@
       :clipped-left="clipped"
       fixed
       app
+      v-if="showHeader"
     >
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
-      <v-btn icon @click="backPage()">
+      <!-- <v-btn icon @click="backPage()">
         <v-icon>mdi-chevron-left</v-icon>
-      </v-btn>
+      </v-btn> -->
       <!-- <v-toolbar-title v-text="title" /> -->
       <v-spacer />
     </v-app-bar>
@@ -60,19 +61,22 @@ export default {
       items: [
         {
           icon: 'mdi-apps',
-          title: 'Welcome',
-          to: '/'
+          title: 'Popular Movies',
+          to: '/popular-movies'
         },
         {
           icon: 'mdi-chart-bubble',
-          title: 'Inspire',
-          to: '/inspire'
+          title: 'List Movies',
+          to: '/list-movies'
         }
       ],
       miniVariant: false,
-      right: true,
-      rightDrawer: false,
       title: 'Vuetify.js'
+    }
+  },
+  computed: {
+    showHeader() {
+      return this.$route.path !== '/'
     }
   },
   methods: {

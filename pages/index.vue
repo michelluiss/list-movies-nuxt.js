@@ -2,50 +2,81 @@
   <v-row>
     <v-container>
       <v-row>
-        <div class="col-3">
-          <h1>Popular Movies</h1>
+        <div class="col-5 mx-auto">
+          <h1>Login</h1>
+          <v-text-field
+            placeholder="User"
+            v-model="user"
+          >
+          </v-text-field>
+          <v-text-field
+            placeholder="Password"
+            v-model="password"
+          >
+          </v-text-field>
+          <form action="">
+            <v-text-field
+              placeholder="API KEY"
+              v-model="apiKey"
+            >
+            </v-text-field>
+            <v-btn
+              color="red"
+              class="ma-2 white--text"
+              @click.prevent="createToken()"
+            >Login
+            </v-btn>
+          </form>
         </div>
-        <div class="col-4 ml-auto">
-          <inputSearch textPlaceholder="Search movie" @searchMovie="searchMovie"></inputSearch>
-        </div>
-      </v-row>
-      <div v-if="movies.length <= 0" class="d-flex">
-        <v-skeleton-loader width="250" type="card" class="mr-3"></v-skeleton-loader>
-        <v-skeleton-loader width="250" type="card" class="mr-3"></v-skeleton-loader>
-      </div>
-      <v-row v-else>
-        <v-col cols="3" v-for="(movie) in movies" :key="movie.id">
-          <cardMovie :movie="movie"></cardMovie>
-        </v-col>
       </v-row>
     </v-container>
   </v-row>
 </template>
 
 <script>
-import { mapState } from 'vuex'
-import inputSearch from '../components/shared/search'
-import cardMovie from '../components/shared/cardMovie'
 
 export default {
   components: {
-    inputSearch,
-    cardMovie
+  },
+  data() {
+    return {
+      user: '',
+      password: '',
+      apiKey: ''
+    }
   },
   computed: {
-    ...mapState({
-      movies: state => state.movies
-    })
-  },
-  async fetch({store}) {
-    await store.dispatch('movies')
   },
   created() {
   },
   methods: {
-    searchMovie(searchValue) {
-      if (searchValue !== '') this.$store.dispatch('searchMovie', searchValue)
-      else this.$store.dispatch('movies')
+    createToken() {
+      const params = {
+        api_key: this.apiKey
+      }
+      this.$store.dispatch('createToken', params)
+        .then(response => {
+          // console.log(response)
+          this.login(response.request_token)
+        })
+    },
+    login(requestToken) {
+      const params = {
+        username: this.user,
+        password: this.password,
+        request_token: requestToken
+      }
+      this.$store.dispatch('login', params)
+        .then(response => {
+          this.getSessinId(response.request_token)
+        })
+    },
+    getSessinId(requestToken) {
+      this.$store.dispatch('getSessinId', requestToken)
+        .then(response => {
+          if (response.session_id) this.$router.push({ path: '/popular-movies' })
+          console.log(reponse)
+        })
     }
   }
 }

@@ -28,12 +28,34 @@ export default {
         {
           path: '/',
           component: 'pages/index.vue',
-          name: 'index'
+          name: 'index',
+          meta: {
+            required_auth: false
+          }
+        },
+        {
+          path: '/popular-movies',
+          component: 'pages/movies/PopularMovies.vue',
+          name: 'popularMovies',
+          meta: {
+            required_auth: true
+          }
         },
         {
           path: '/movie/:id',
           component: 'pages/movies/Movie.vue',
-          name: 'movie'
+          name: 'movie',
+          meta: {
+            required_auth: true
+          }
+        },
+        {
+          path: '/list-movies',
+          component: 'pages/movies/ListMovies.vue',
+          name: 'listMovies',
+          meta: {
+            required_auth: true
+          }
         }
       )
     }
