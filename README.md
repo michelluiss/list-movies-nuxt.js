@@ -1,5 +1,10 @@
 # list-movies-nuxt.js
 
+Para utilizar o sistema é necessário ter uma conta no site https://www.themoviedb.org/signup
+
+Para fazer o login utilize o user e senha que foram criados ao registrar e a chave da API que pode ser encontrada no link abaixo: 
+https://www.themoviedb.org/settings/api
+
 ## Build Setup
 
 ```bash
