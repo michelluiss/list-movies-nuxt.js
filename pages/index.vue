@@ -10,8 +10,11 @@
           >
           </v-text-field>
           <v-text-field
+            :type="showPassword ? 'text' : 'password'"
             placeholder="Password"
             v-model="password"
+            :append-icon="showPassword ? 'mdi-eye-outline' : 'mdi-eye-off-outline'"
+            @click:append="togglePassword"
           >
           </v-text-field>
           <form action="">
@@ -42,19 +45,22 @@ export default {
     return {
       user: '',
       password: '',
-      apiKey: ''
+      apiKey: '',
+      showPassword: false
     }
   },
   computed: {
   },
   created() {
     const request_token = JSON.parse(localStorage.getItem('request_token'))
-    console.log(request_token)
     if (request_token && request_token.expity > new Date()) {
       this.createToken()
     } else if (request_token) this.listMovies()
   },
   methods: {
+    togglePassword() {
+      this.showPassword = !this.showPassword
+    },
     listMovies() {
       const session_id = JSON.parse(localStorage.getItem('session_id'))
       this.$store.dispatch('listMovies')
