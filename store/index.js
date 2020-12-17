@@ -24,7 +24,7 @@ const state = {
   list: [],
   listMovies: [],
   authentication: {
-    api_key: request_token.api_key,
+    api_key: request_token ? request_token.api_key : null,
     session_id: null,
     token: {
       request_token: null,

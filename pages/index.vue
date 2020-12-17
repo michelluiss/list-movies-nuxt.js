@@ -49,9 +49,10 @@ export default {
   },
   created() {
     const request_token = JSON.parse(localStorage.getItem('request_token'))
-    if (request_token.expity > new Date()) {
+    console.log(request_token)
+    if (request_token && request_token.expity > new Date()) {
       this.createToken()
-    } else this.listMovies()
+    } else if (request_token) this.listMovies()
   },
   methods: {
     listMovies() {
@@ -85,7 +86,6 @@ export default {
       this.$store.dispatch('getSessinId', requestToken)
         .then(response => {
           if (response.session_id) this.$router.push({ path: '/popular-movies' })
-          console.log(reponse)
         })
     }
   }
