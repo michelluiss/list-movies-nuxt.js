@@ -7,18 +7,24 @@ import { moviesGetters } from './getters'
 import Vue from 'vue'
 import Vuex from 'vuex'
 
-import config from '@/config'
+const request_token = JSON.parse(localStorage.getItem('request_token'))
 
 Vue.use(Vuex)
 
 const state = {
   movies: [],
+  moviesMeta: {
+    page: null
+  },
+  searchMoviesMeta: {
+    page: null
+  },
   movie: {},
   videos: [],
   list: [],
   listMovies: [],
   authentication: {
-    api_key: null,
+    api_key: request_token.api_key,
     session_id: null,
     token: {
       request_token: null,
@@ -38,10 +44,35 @@ const mutations = {
     state.authentication.session_id = sessoionId
   },
   setMovies(state, moviesList) {
-    state.movies = moviesList
+    if (state.movies.length > 0) state.movies = state.movies.concat(moviesList)
+    else state.movies = moviesList
+  },
+  setMoviesMeta(state, meta) {
+    state.moviesMeta = {
+      page: meta.page
+    }
   },
   resetMovies(state) {
     state.movies = []
+  },
+  resetMetaMovies(state) {
+    state.moviesMeta = {
+      page: null
+    }
+  },
+  resetSearchMoviesMeta(state) {
+    state.searchMoviesMeta = {
+      page: null
+    }
+  },
+  resetAllDataMovies(state) {
+    state.movies = []
+    state.moviesMeta = {
+      page: null
+    }
+    state.searchMoviesMeta = {
+      page: null
+    }
   },
   setMovie(state, movie) {
     state.movie = movie
@@ -61,6 +92,15 @@ const mutations = {
 }
 
 const actions = {
+  async setAuthorization({ commit }) {
+    const request_token = JSON.parse(localStorage.getItem('request_token'))
+    const session_id = JSON.parse(localStorage.getItem('session_id'))
+    if (request_token) {
+      commit('saveToken', { request_token })
+      commit('saveApiKey', request_token.api_key)
+    }
+    if (session_id) commit('saveSession', session_id.session_id)
+  },
   async createToken({ commit }, payload) {
     const params = {
       api_key: payload.api_key
@@ -85,7 +125,7 @@ const actions = {
   },
   async login({ commit, state }, body) {
     const params = {
-      api_key: state.authentication.apiKey
+      api_key: state.authentication.api_key
     }
     return await new Promise((resolve, reject) => {
       this.$axios.$post('/authentication/token/validate_with_login', body, { params })
@@ -99,7 +139,7 @@ const actions = {
   },
   async getSessinId({ commit, state }, requestToken) {
     const params = {
-      api_key: state.authentication.apiKey
+      api_key: state.authentication.api_key
     }
     const body = {
       request_token: requestToken
@@ -117,19 +157,32 @@ const actions = {
         })
     })
   },
-  async movies({ commit }) {
-    const params = getDefaultParams()
-    params.page = 1
+  async movies({ commit, state }) {
+    commit('resetSearchMoviesMeta')
+    const params = {
+      api_key: state.authentication.api_key,
+      page: state.moviesMeta.page ? (state.moviesMeta.page + 1) : 1
+    }
     await this.$axios.$get('/movie/popular', { params })
       .then(response => {
         commit('setMovies', response.results)
+        const meta = {
+          page: response.page,
+          total_pages: response.total_pages,
+          total_results: response.total_results
+        }
+        commit('setMoviesMeta', meta)
+        return true
       })
       .catch(error => {
         console.log(error)
+        return error
       })
   },
-  async movie({ commit }, movieId) {
-    const params = getDefaultParams()
+  async movie({ commit, state }, movieId) {
+    const params = {
+      api_key: state.authentication.api_key
+    }
     return await this.$axios.$get(`/movie/${movieId}`, { params })
       .then(response => {
         commit('setMovie', response)
@@ -139,9 +192,12 @@ const actions = {
         return error
       })
   },
-  async searchMovie({ commit }, searchValue) {
-    commit('resetMovies')
-    const params = getDefaultParams()
+  async searchMovie({ commit, state }, searchValue) {
+    commit('resetMetaMovies')
+    const params = {
+      api_key: state.authentication.api_key,
+      page: state.searchMoviesMeta.page ? (state.searchMoviesMeta.page + 1) : 1
+    }
     params.query = searchValue
     return await this.$axios.$get('/search/movie', { params })
       .then(response => {
@@ -152,8 +208,10 @@ const actions = {
         return error
       })
   },
-  async getVideos({ commit }, movieId) {
-    const params = getDefaultParams()
+  async getVideos({ commit, state }, movieId) {
+    const params = {
+      api_key: state.authentication.api_key
+    }
     return await this.$axios.$get(`/movie/${movieId}/videos`, { params })
       .then(response => {
         commit('setVideos', response.results)
@@ -189,15 +247,6 @@ const actions = {
       .catch(error => {
         return error
       })
-  },
-  setAuthorization({ commit }) {
-    const request_token = JSON.parse(localStorage.getItem('request_token'))
-    const session_id = JSON.parse(localStorage.getItem('session_id'))
-    if (request_token) {
-      commit('saveToken', { request_token })
-      commit('saveApiKey', request_token.api_key)
-    }
-    if (session_id) commit('saveSession', session_id.session_id)
   }
 }
 
@@ -230,7 +279,3 @@ export default { state, mutations, actions, getters }
 // export default new Vuex.Store({
 //   modules: { movies: moviesModule }
 // })
-
-function getDefaultParams() {
-  return { api_key: config.apiKey }
-}

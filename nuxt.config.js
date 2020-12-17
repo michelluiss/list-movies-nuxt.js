@@ -88,7 +88,8 @@ export default {
 
   // Modules (https://go.nuxtjs.dev/config-modules)
   modules: [
-    '@nuxtjs/axios'
+    '@nuxtjs/axios',
+    '@forked-prs/nuxt-infinite-scroll-module'
   ],
 
   // Used as fallback if no runtime config is provided
