@@ -50,7 +50,7 @@ export default {
   },
   watch: {
     searchValue() {
-      this.searchMovie(this.searchValue)
+      this.getMovies(this.searchValue)
     }
   },
   beforeDestroy() {
@@ -75,17 +75,13 @@ export default {
     searchMovie(searchValue) {
       if (this.loading) return
       this.loading = true
-      if (searchValue !== '') {
-        this.$store.dispatch('searchMovie', searchValue)
-          .then(response => {
-            this.loading = false
-          })
-          .catch(error => {
-            this.loading = false
-          })
-      } else {
-        this.fetchMovies()
-      }
+      this.$store.dispatch('searchMovie', searchValue)
+        .then(response => {
+          this.loading = false
+        })
+        .catch(error => {
+          this.loading = false
+        })
     },
     search(value) {
       this.searchValue = value

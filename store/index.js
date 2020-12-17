@@ -44,8 +44,8 @@ const mutations = {
     state.authentication.session_id = sessoionId
   },
   setMovies(state, moviesList) {
-    if (state.movies.length > 0) state.movies = state.movies.concat(moviesList)
-    else state.movies = moviesList
+    if (state.movies.length > 0 && moviesList.page > 1) state.movies = state.movies.concat(moviesList.results)
+    else state.movies = moviesList.results
   },
   setMoviesMeta(state, meta) {
     state.moviesMeta = {
@@ -170,7 +170,7 @@ const actions = {
     }
     await this.$axios.$get('/movie/popular', { params })
       .then(response => {
-        commit('setMovies', response.results)
+        commit('setMovies', response)
         const meta = {
           page: response.page,
           total_pages: response.total_pages,
@@ -180,7 +180,6 @@ const actions = {
         return true
       })
       .catch(error => {
-        console.log(error)
         return error
       })
   },
@@ -199,7 +198,6 @@ const actions = {
   },
   async searchMovie({ commit, state }, searchValue) {
     commit('resetMetaMovies')
-    console.log(state.searchMoviesMeta)
     const params = {
       api_key: state.authentication.api_key,
       page: state.searchMoviesMeta.page ? (state.searchMoviesMeta.page + 1) : 1
@@ -207,7 +205,7 @@ const actions = {
     params.query = searchValue
     return await this.$axios.$get('/search/movie', { params })
       .then(response => {
-        commit('setMovies', response.results)
+        commit('setMovies', response)
         const meta = {
           page: response.page,
           total_pages: response.total_pages,
