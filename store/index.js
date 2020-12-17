@@ -236,14 +236,16 @@ const actions = {
       api_key: state.authentication.api_key,
       session_id: state.authentication.session_id
     }
-    return await this.$axios.$get('/account/account_id/lists', { params })
-      .then(response => {
-        commit('setList', response.results)
-        return true
-      })
-      .catch(error => {
-        return error
-      })
+    return await new Promise((resolve, reject) => {
+      return this.$axios.$get('/account/account_id/lists', { params })
+        .then(response => {
+          commit('setList', response.results)
+          resolve(response)
+        })
+        .catch(error => {
+          reject(error)
+        })
+    })
   },
   async list({ commit, state }, listId) {
     const params = {

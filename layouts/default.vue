@@ -31,10 +31,6 @@
       v-if="showHeader"
     >
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
-      <!-- <v-btn icon @click="backPage()">
-        <v-icon>mdi-chevron-left</v-icon>
-      </v-btn> -->
-      <!-- <v-toolbar-title v-text="title" /> -->
       <v-spacer />
     </v-app-bar>
     <v-main>
@@ -80,12 +76,10 @@ export default {
     }
   },
   created() {
-    this.$store.dispatch('setAuthorization')
-  },
-  methods: {
-    backPage() {
-      window.history.back()
-    }
+    const request_token = JSON.parse(localStorage.getItem('request_token'))
+    const session_id = JSON.parse(localStorage.getItem('session_id'))
+    if (request_token && session_id) this.$store.dispatch('setAuthorization')
+    else (this.$router.push({ path: '/' }))
   }
 }
 </script>
