@@ -52,6 +52,11 @@ const mutations = {
       page: meta.page
     }
   },
+  setSearchMoviesMeta(state, meta) {
+    state.searchMoviesMeta = {
+      page: meta.page
+    }
+  },
   resetMovies(state) {
     state.movies = []
   },
@@ -194,6 +199,7 @@ const actions = {
   },
   async searchMovie({ commit, state }, searchValue) {
     commit('resetMetaMovies')
+    console.log(state.searchMoviesMeta)
     const params = {
       api_key: state.authentication.api_key,
       page: state.searchMoviesMeta.page ? (state.searchMoviesMeta.page + 1) : 1
@@ -202,6 +208,12 @@ const actions = {
     return await this.$axios.$get('/search/movie', { params })
       .then(response => {
         commit('setMovies', response.results)
+        const meta = {
+          page: response.page,
+          total_pages: response.total_pages,
+          total_results: response.total_results
+        }
+        commit('setSearchMoviesMeta', meta)
         return true
       })
       .catch(error => {

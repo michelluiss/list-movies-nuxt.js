@@ -73,8 +73,19 @@ export default {
         })
     },
     searchMovie(searchValue) {
-      if (searchValue !== '') this.$store.dispatch('searchMovie', searchValue)
-      else this.$store.dispatch('movies')
+      if (this.loading) return
+      this.loading = true
+      if (searchValue !== '') {
+        this.$store.dispatch('searchMovie', searchValue)
+          .then(response => {
+            this.loading = false
+          })
+          .catch(error => {
+            this.loading = false
+          })
+      } else {
+        this.fetchMovies()
+      }
     },
     search(value) {
       this.searchValue = value
