@@ -6,9 +6,9 @@
         height="350px"
         :src="`https://image.tmdb.org/t/p/w220_and_h330_face/${movie.poster_path}`"
       >
-        <v-card-title>{{movie.title}}</v-card-title>
       </v-img>
     </NuxtLink>
+    <v-card-title>{{movie.title}}</v-card-title>
 
     <v-card-subtitle class="pb-0">Rating {{movie.vote_average}}</v-card-subtitle>
 
