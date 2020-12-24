@@ -1,4 +1,5 @@
 # list-movies-nuxt.js
+Link da aplicação: https://list-movie-7ad20.firebaseapp.com/
 
 Para utilizar o sistema é necessário ter uma conta no site https://www.themoviedb.org/signup
 
